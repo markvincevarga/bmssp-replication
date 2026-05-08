@@ -1,0 +1,85 @@
+[graph]
+instances = 3
+base_seed = 42
+
+[criterion.tiers]
+small  = { max_size = 500_000,     warm_up_ms = 3000, measurement_s = 5,  sample_size = 100 }
+medium = { max_size = 4_000_000,   warm_up_ms = 500,  measurement_s = 5,  sample_size = 10 }
+large  = { max_size = 999_999_999, warm_up_ms = 100,  measurement_s = 10, sample_size = 10 }
+
+[matrix]
+algorithms = [
+    "dijkstra",
+    "dijkstra_opt",
+    "bmssp_base",
+    "bmssp_o_1",
+    "bmssp_o_2",
+    "bmssp_o_3",
+    "bmssp_o_4",
+    "bmssp_o_5",
+    "bmssp_o_6",
+]
+
+sizes = [1024, 4096, 16384, 65536, 262144, 1048576, 4194304, 16777216]
+
+[[matrix.sources]]
+spec = "fixed:ef=4"
+label = "ef4"
+
+[[matrix.sources]]
+spec = "fixed:ef=8"
+label = "ef8"
+
+[[matrix.sources]]
+spec = "ba:m=2"
+label = "ba_m2"
+max_size = 4194304
+
+[[matrix.sources]]
+spec = "ba:m=4"
+label = "ba_m4"
+max_size = 4194304
+
+[[matrix.sources]]
+spec = "ws:k=4:beta=0.3"
+label = "ws_k4_b30"
+max_size = 4194304
+
+[[matrix.sources]]
+spec = "ws:k=8:beta=0.3"
+label = "ws_k8_b30"
+max_size = 4194304
+
+[[matrix.sources]]
+spec = "grid"
+label = "grid"
+
+[[matrix.rg_sources]]
+size = 1024
+spec = "rg:radius=0.05"
+label = "rg_r50"
+
+[[matrix.rg_sources]]
+size = 4096
+spec = "rg:radius=0.025"
+label = "rg_r25"
+
+[[matrix.rg_sources]]
+size = 16384
+spec = "rg:radius=0.0125"
+label = "rg_r12"
+
+[[matrix.rg_sources]]
+size = 65536
+spec = "rg:radius=0.006"
+label = "rg_r6"
+
+[[matrix.rg_sources]]
+size = 262144
+spec = "rg:radius=0.003"
+label = "rg_r3"
+
+[[matrix.rg_sources]]
+size = 1048576
+spec = "rg:radius=0.0016"
+label = "rg_r1"

@@ -1,0 +1,4 @@
+# DIMACS road network artifacts (downloaded by scripts/fetch_dimacs_roads.sh).
+# Never check these in — they're 3+ GB extracted, public, and reproducible.
+*.gr
+*.gr.gz

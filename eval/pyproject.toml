@@ -1,0 +1,19 @@
+[project]
+name = "duan-eval"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "ipykernel>=7.2.0",
+    "jupyter>=1.1.1",
+    "jupytext>=1.19.1",
+    "matplotlib>=3.10.8",
+    "streamlit>=1.45.0",
+    "plotly>=6.1.0",
+    "pandas>=2.2.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.1",
+]

@@ -1,0 +1,144 @@
+# Castro et al. (2025) replication matrix — arXiv:2511.03007.
+#
+# Each source pins its own `sizes` list to match Castro's tables exactly:
+#   - D3 / H3        — Table A.1, 19 sizes from 2^7 to 2^25 (m = 3n)
+#   - grids (4 var)  — Tables A.3 / A.4, 9 sizes from 2^8 to 2^24 (powers of 4 only)
+#   - USA roads      — Table A.2, file-driven (single placeholder size)
+#
+# Run:
+#     python bench/run.py --config bench/castro_config.toml
+#
+# Prerequisite for DIMACS roads:
+#     scripts/fetch_dimacs_roads.sh
+#
+# Source vertex is always vertex 0 (Castro uses 1, equivalent after the
+# DIMACS 1->0 index normalization). Generator seeds match Castro's bash
+# scripts: D3 = 1, H3 = 1971, all grids = 1971.
+
+[graph]
+instances = 1
+base_seed = 42
+
+[criterion.tiers]
+small  = { max_size = 500_000,     warm_up_ms = 3000, measurement_s = 5,  sample_size = 100 }
+medium = { max_size = 4_000_000,   warm_up_ms = 500,  measurement_s = 5,  sample_size = 10 }
+large  = { max_size = 999_999_999, warm_up_ms = 100,  measurement_s = 10, sample_size = 10 }
+
+[matrix]
+algorithms = [
+    "dijkstra",
+    "dijkstra_opt",
+    "bmssp_base",
+    "bmssp_o_1",
+    "bmssp_o_2",
+    "bmssp_o_3",
+    "bmssp_o_4",
+    "bmssp_o_5",
+    "bmssp_o_6",
+]
+
+# Default size list (used by sources that don't override it).
+sizes = [
+    128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536,
+    131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608,
+    16777216, 33554432,
+]
+
+# --- Sparse random graphs (Castro Table A.1) ---
+
+[[matrix.sources]]
+spec = "castro:d3"
+label = "castro_d3"
+# inherits default sizes (2^7 .. 2^25)
+
+[[matrix.sources]]
+spec = "castro:h3"
+label = "castro_h3"
+# inherits default sizes
+
+# --- Grid graphs (Castro Tables A.3, A.4) — powers of 4 only ---
+
+[[matrix.sources]]
+spec = "castro:sgrided"
+label = "castro_sgrided"
+sizes = [256, 1024, 4096, 16384, 65536, 262144, 1048576, 4194304, 16777216]
+
+[[matrix.sources]]
+spec = "castro:rgrided"
+label = "castro_rgrided"
+sizes = [256, 1024, 4096, 16384, 65536, 262144, 1048576, 4194304, 16777216]
+
+[[matrix.sources]]
+spec = "castro:sgridr"
+label = "castro_sgridr"
+sizes = [256, 1024, 4096, 16384, 65536, 262144, 1048576, 4194304, 16777216]
+
+[[matrix.sources]]
+spec = "castro:rgridr"
+label = "castro_rgridr"
+sizes = [256, 1024, 4096, 16384, 65536, 262144, 1048576, 4194304, 16777216]
+
+# --- USA road networks (Castro Table A.2) — sizes pinned to actual node ---
+# --- counts so the criterion tiers (small/medium/large) bucket each road  ---
+# --- file at a budget that matches its workload. The graph is loaded from ---
+# --- disk regardless of the size value (DimacsRoad ignores node_count).   ---
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.NY"
+label = "usa_NY"
+sizes = [264346]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.BAY"
+label = "usa_BAY"
+sizes = [321270]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.COL"
+label = "usa_COL"
+sizes = [435666]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.FLA"
+label = "usa_FLA"
+sizes = [1070376]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.NW"
+label = "usa_NW"
+sizes = [1207945]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.NE"
+label = "usa_NE"
+sizes = [1524453]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.CAL"
+label = "usa_CAL"
+sizes = [1890815]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.LKS"
+label = "usa_LKS"
+sizes = [2758119]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.E"
+label = "usa_E"
+sizes = [3598623]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.W"
+label = "usa_W"
+sizes = [6262104]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.CTR"
+label = "usa_CTR"
+sizes = [14081816]
+
+[[matrix.sources]]
+spec = "dimacs:name=USA-road-t.USA"
+label = "usa_USA"
+sizes = [23947347]

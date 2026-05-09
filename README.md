@@ -1,4 +1,4 @@
-# duan
+# BMSSP Replication
 
 Rust implementations of SSSP [single-source shortest path] algorithms, benchmarked against Castro et al. (2025).
 
